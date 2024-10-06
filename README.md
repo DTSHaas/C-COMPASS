@@ -57,5 +57,5 @@ For any questions, contact danniel.haas@helmholtz-munich.de
 
 ### Pre-Publication Information
 The software documenation to C-COMPASS is accessable under:
-/docs/build/html/index.html
+**/docs/build/html/index.html**
 and will be released online with publication of the paper.
