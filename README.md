@@ -35,7 +35,7 @@ C-COMPASS is distributed as a portable application, meaning you do not need to i
 - Standard parameters should fit for the majority of experiments. You **don't need to change the default settings!**
 
 ### Command-Line Usage (Optional)
-You can also run the software vira the command line:
+You can also run the software via the command line:
 > python CCMPS.py
 
 ### Contributing
@@ -49,8 +49,13 @@ Contributions to C-COMPASS are welcome! To contribute:
 C-COMPASS is licensed under the BSD 3-Clause License.
 
 ### Trouble-Shooting
-- **SmartScreen Warning**: If Windows blocks the application via SmartScreen, this is due to the software being unsigned. Please consult your IT department to bypass this restriction of necessary.
-- **Long Path Issues on Windows*: If your system encounters long path errors, you can activate them in your registry under 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem' by setting the value for **LongPathsEnabled* from 0 to 1.
+- **SmartScreen Warning**: If Windows blocks the application via SmartScreen, this is due to the software being unsigned. Please consult your IT department to bypass this restriction if necessary.
+- **Long Path Issues on Windows**: If your system encounters long path errors, you can activate them in your registry under 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem' by setting the value for **LongPathsEnabled* from 0 to 1.
 
 ### Contact
 For any questions, contact danniel.haas@helmholtz-munich.de
+
+### Pre-Publication Information
+The software documenation to C-COMPASS is accessable under:
+/docs/build/html/index.html
+and will be released online with publication of the paper.
