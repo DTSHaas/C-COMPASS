@@ -18,6 +18,27 @@ import keras.backend as K
 
 
 
+import os
+
+# Get the user's AppData directory
+appdata_directory = os.getenv('APPDATA')
+
+# Define the path to the 'Classifier_Models' folder within AppData
+classifier_directory = os.path.join(appdata_directory, 'CCOMPASS_Models')
+
+# Create the folder if it does not exist
+if not os.path.exists(classifier_directory):
+    os.makedirs(classifier_directory)
+
+
+
+
+
+
+
+
+
+
 
 optimizer_classes = {
         'adam' : tf.keras.optimizers.Adam,
@@ -530,7 +551,7 @@ def multi_predictions (FNN_classifier, learning_xyz, NN_params, condition, round
         objective = 'val_mean_squared_error',
         max_epochs = NN_params['NN_epochs'],
         factor = 3,
-        directory = 'Classifier_Models',
+        directory = classifier_directory,
         project_name = time + '_Classifier_' + condition + '_' + str(roundn))
     
     stop_early = tf.keras.callbacks.EarlyStopping(monitor = 'val_loss', patience = 5)
@@ -801,180 +822,6 @@ def single_prediction (learning_xyz, clf, svm_metrics, fract_marker, svm_marker,
 
 
 
-
-
-
-
-
-
-
-
-
-
-    
-## PROFILE MIXING END
-# -------------------------
-## AUTOENCODER START
-    
-        # optimizer_classes = {
-        # 'adam' : tf.keras.optimizers.Adam,
-        # 'rmsprop' : tf.keras.optimizers.RMSprop,
-        # 'sgd' : tf.keras.optimizers.SGD
-        # }
-        
-        # for condition in conditions:
-        #     x_full = learning_xyz[condition]['x_full']
-        #     x_full_up = learning_xyz[condition]['x_full_up']['ROUND ' + str(R)]
-        #     x_train = learning_xyz[condition]['x_train']
-        #     x_train_up = learning_xyz[condition]['x_train_up']['ROUND ' + str(R)]
-        #     x_train_mixed_up = learning_xyz[condition]['x_train_mixed_up']['ROUND ' + str(R)]
-        #     x_test = learning_xyz[condition]['x_test']
-            
-        #     V_full_up = learning_xyz[condition]['V_full_up']['ROUND ' + str(R)]
-            
-        #     if NN_params['AE'] == 'none':
-        #         y_full = x_full
-        #         y_full_up = x_full_up
-        #         y_train = x_train
-        #         y_train_up = x_train_up
-        #         y_train_mixed_up = x_train_mixed_up
-        #         y_test = x_test
-            # else:
-            #     if NN_params['AE'] == 'full' or NN_params['AE'] == 'full_lite':
-            #         class AE_HyperModel(kt.HyperModel):
-            #             def build(self, hp):
-            #                 model = keras.Sequential()
-            #                 optimizer_choice = hp.Choice('optimizer', NN_params['optimizers'])
-            #                 learning_rate = hp.Float('learning_rate', min_value = 1e-4, max_value = 1e-2, sampling = 'log')
-            #                 hp_unit = np.shape(x_train_up)[1]
-            #                 units_list = []
-            #                 model.add(tf.keras.Input(hp_unit,))
-            #                 i = 1
-            #                 while hp_unit >= 6:
-            #                     hp_unit = hp.Int('units'+str(i), min_value = int(hp_unit * 0.25), max_value = int(hp_unit * 0.75), step = 1)
-            #                     if NN_params['AE_activation'] == 'relu':
-            #                         model.add(keras.layers.Dense(hp_unit, activation = 'relu'))
-            #                     elif NN_params['AE_activation'] == 'leakyrelu':
-            #                         hp_alpha = hp.Float('alpha', min_value = 0.05, max_value = 0.3, step = 0.05)
-            #                         model.add(keras.layers.Dense(hp_unit))
-            #                         model.add(keras.layers.LeakyReLU(hp_alpha))
-            #                     units_list.append(hp_unit)
-            #                     i +=1
-            #                 del units_list[-1]
-            #                 for unit in units_list[::-1]:
-            #                     if NN_params['AE_activation'] == 'relu':
-            #                         model.add(keras.layers.Dense(unit, activation = 'relu'))
-            #                     elif NN_params['AE_activation'] == 'leakyrelu':
-            #                         hp_alpha = hp.Float('alpha', min_value = 0.05, max_value = 0.3, step = 0.05)
-            #                         model.add(keras.layers.Dense(unit))
-            #                         model.add(keras.layers.LeakyReLU(hp_alpha))
-            #                 if NN_params['AE_out'] == 'leakyrelu':
-            #                     hp_alpha = hp.Float('alpha', min_value = 0.05, max_value = 0.3, step = 0.5)
-            #                     model.add(keras.layers.Dense(np.shape(x_train_up)[1]))
-            #                     model.add(keras.layers.LeakyReLU(hp_alpha))
-            #                 else:
-            #                     model.add(keras.layers.Dense(np.shape(x_train_up)[1], activation = NN_params['AE_out']))
-            #                 optimizer = optimizer_classes[optimizer_choice](learning_rate = learning_rate)
-            #                 model.compile(loss = 'mse', optimizer = optimizer, metrics = [tf.keras.metrics.MeanSquaredError()])
-            #                 return model
-                
-            #     elif NN_params['AE'] == 'lite':
-            #         class AE_HyperModel(kt.HyperModel):
-            #             def build(self, hp):
-            #                 model = keras.Sequential()
-            #                 optimizer_choice = hp.Choice('optimizer', NN_params['optimizers'])
-            #                 learning_rate = hp.Float('learning_rate', min_value = 1e-5, max_value = 1e-2, sampling = 'log')
-            #                 hp_unit = np.shape(x_train_up)[1]
-            #                 model.add(tf.keras.Input(hp_unit,))
-            #                 hp_hiddenunit = hp.Int('units_hidden', min_value = int(hp_unit * 0.8), max_value = int(hp_unit * 0.9), step = 1)
-            #                 model.add(keras.layers.Dense(hp_hiddenunit, activation = 'relu'))
-            #                 model.add(keras.layers.Dense(np.shape(x_train_up)[1], activation = NN_params['AE_out']))
-            #                 optimizer = optimizer_classes[optimizer_choice](learning_rate = learning_rate)
-            #                 model.compile(loss = 'mse', optimizer = optimizer, metrics = [tf.keras.metrics.MeanSquaredError()])
-            #                 return model
-                
-            #     now = datetime.now()
-            #     time = now.strftime("%Y%m%d%H%M%S")
-            #     AE_tuner = kt.Hyperband(
-            #         hypermodel = AE_HyperModel(kt.HyperParameters()),
-            #         hyperparameters = kt.HyperParameters(),
-            #         objective = 'val_mean_squared_error',
-            #         max_epochs = 10,
-            #         factor = 3,
-            #         directory = 'AutoEncoder_Models',
-            #         project_name = time + '_AutoEncoder_' + condition)
-            #     stop_early = tf.keras.callbacks.EarlyStopping(monitor = 'val_loss', patience = 5)
-            #     AE_tuner.search(x_full_up, V_full_up, epochs = NN_params['AE_epochs'], validation_split = 0.2, callbacks = [stop_early])
-            #     AE_models = AE_tuner.get_best_models(num_models = 1)
-            #     AE_best = AE_models[0]
-            #     AE_best.build(x_train_up)
-            #     AE_best.summary()
-                
-            #     AE_val = AE_best
-            #     AE_stringlist = []
-            #     AE_best.summary(print_fn = lambda x: AE_stringlist.append(x))
-            #     AE_summary = "\n".join(AE_stringlist)
-            #     learning_xyz[condition]['AE_summary']['ROUND ' + str(R)] = AE_summary
-            #     AE_history = AE_val.fit(x_full_up,
-            #                             V_full_up,
-            #                             epochs = NN_params['AE_epochs'],
-            #                             validation_split = 0.2,
-            #                             callbacks = [stop_early]).history
-                
-            #     learning_xyz[condition]['AE_history']['ROUND ' + str(R)] = AE_history
-                
-            #     if NN_params['AE'] == 'full' or NN_params['AE'] == 'lite':
-            #         encoder = Model(inputs = AE_best.input, outputs = AE_best.layers[int(0.5*len(AE_best.layers))-1].output)
-            #     elif NN_params['AE'] == 'full_lite':
-            #         encoder = Model(inputs = AE_best.input, outputs = AE_best.layers[1].output)
-            #     encoder.summary()
-                
-            #     v_full = AE_best.predict(x_full)
-            #     v_full_up = AE_best.predict(x_full_up)
-                
-            #     y_full = encoder.predict(x_full)
-            #     y_full_up = encoder.predict(x_full_up)
-            #     y_train = encoder.predict(x_train)
-            #     y_train_up = encoder.predict(x_train_up)
-            #     y_train_mixed_up = encoder.predict(x_train_mixed_up)
-            #     y_test = encoder.predict(x_test)
-                
-            #     learning_xyz[condition]['v_full_df']['ROUND ' + str(R)] = pd.DataFrame(v_full,
-            #                                                                            index = learning_xyz[condition]['x_full_df'].index,
-            #                                                                            columns = learning_xyz[condition]['x_full_df'].columns)
-            #     learning_xyz[condition]['v_full']['ROUND ' + str(R)] = v_full
-            #     learning_xyz[condition]['v_full_up_df']['ROUND ' + str(R)] = pd.DataFrame(v_full_up,
-            #                                                                               index = learning_xyz[condition]['x_full_up_df']['ROUND ' + str(R)].index,
-            #                                                                               columns = learning_xyz[condition]['x_full_up_df']['ROUND ' + str(R)].columns)
-            #     learning_xyz[condition]['v_full_up']['ROUND ' + str(R)] = v_full_up
-            
-            # learning_xyz[condition]['y_full_df']['ROUND ' + str(R)] = pd.DataFrame(y_full,
-            #                                                                        index = learning_xyz[condition]['x_full_df'].index)
-            # learning_xyz[condition]['y_full']['ROUND ' + str(R)] = y_full
-            
-            # learning_xyz[condition]['y_full_up_df']['ROUND ' + str(R)] = pd.DataFrame(y_full_up,
-            #                                                                           index = learning_xyz[condition]['x_full_up_df']['ROUND ' + str(R)].index)
-            # learning_xyz[condition]['y_full_up']['ROUND ' + str(R)] = y_full_up
-            
-            # learning_xyz[condition]['y_train_df']['ROUND ' + str(R)] = pd.DataFrame(y_train,
-            #                                                                         index = learning_xyz[condition]['x_train_df'].index)
-            # learning_xyz[condition]['y_train']['ROUND ' + str(R)] = y_train
-            
-            # learning_xyz[condition]['y_train_up_df']['ROUND ' + str(R)] = pd.DataFrame(y_train_up,
-            #                                                                            index = learning_xyz[condition]['x_train_up_df']['ROUND ' + str(R)].index)
-            # learning_xyz[condition]['y_train_up']['ROUND ' + str(R)] = y_train_up
-            
-            # learning_xyz[condition]['y_train_mixed_up_df']['ROUND ' + str(R)] = pd.DataFrame(y_train_mixed_up,
-            #                                                                                  index = learning_xyz[condition]['x_train_mixed_up_df']['ROUND ' + str(R)].index)
-            # learning_xyz[condition]['y_train_mixed_up']['ROUND ' + str(R)] = y_train_mixed_up
-            
-            # learning_xyz[condition]['y_test_df']['ROUND ' + str(R)] = pd.DataFrame(y_test,
-            #                                                                        index = learning_xyz[condition]['x_test_df'].index)
-            # learning_xyz[condition]['y_test']['ROUND ' + str(R)] = y_test
-    
-## AUTOENCODER END
-# -------------------------
-## CLASSIFIER START
     
 
 

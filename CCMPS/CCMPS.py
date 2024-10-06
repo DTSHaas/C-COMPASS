@@ -138,7 +138,7 @@ layout_TP =             [[sg.Button('Add file...', size = (8,1), key = '-tp_add-
                              [sg.Text('...ready!', font = ('Arial', 8), size = (40,1), key = '-tp_status-', visible = True, justification = 'center')],
                              ], size = (260,70)),
                          sg.Column([
-                             [sg.Button('TP Summary', size = (15,1), key = '-tp_summary-', disabled = True, enable_events = True, button_color = 'grey')],
+                             [sg.Button('TP Summary', size = (15,1), key = '-tp_summary-', disabled = True, enable_events = True, button_color = 'grey', visible = False)],
                              [sg.Button('TP Export...', size = (15,1), key = '-tp_export-', disabled = True, enable_events = True, button_color = 'grey')],
                              ], size = (140,70))],
                          ]
@@ -210,7 +210,7 @@ layout_CCMPS = [[sg.Menu(menu_def, tearoff = False)],
                           [sg.VPush()],
                           [sg.Button('Import/Edit Fractionation...', size = (39,1))],
                           [sg.Button('Import/Edit Total Lysate...', size = (39,1))],
-                          ], title = 'Additional Import', size = (340,130), vertical_alignment = 'top')],
+                          ], title = 'Additional Import', size = (340,130), vertical_alignment = 'top', visible = False)],
                       
                       
                       
@@ -257,7 +257,7 @@ layout_CCMPS = [[sg.Menu(menu_def, tearoff = False)],
                                       [sg.Button('Density Plot', size = (15,1), key = '-lipidome_density-', disabled = True, enable_events = True),
                                        sg.Button('Class Compositions', size = (15,1), key = '-lipidome_composition-', disabled = True, enable_events = True)],
                                       
-                              ], title = 'Lipidome', size = (290,195))],
+                              ], title = 'Lipidome', size = (290,195), visible = False)],
                           
                           ], title = 'Static Statistics', size = (580,230))
                         ],
@@ -649,10 +649,10 @@ while True:
         if export_folder:
             for condition in results:
                 fname = export_folder + '/CCMPS_ClassComposition_' + condition + '.xlsx'
-                selected_columns = [col for col in results[condition]['metrics'].columns if col.startswith('nCPA_imp_')] + ['TPA']
+                selected_columns = [col for col in results[condition]['metrics'].columns if col.startswith('nCPA')] + ['TPA']
                 df_out = results[condition]['metrics'][selected_columns]
                 df_out.columns = [
-                    col.replace('nCPA_imp_', 'nCPA_normalizedClasscentrigProteinAmount_log2transformed_') if col.startswith('nCPA_imp_') else
+                    col.replace('nCPA_imp_', 'nCPA_normalizedClasscentrigProteinAmount_') if col.startswith('nCPA_') else
                     'TPA_TotalProteinAmount' if col == 'TPA' else col
                     for col in df_out.columns]
                 df_out.to_excel(fname, index=True)

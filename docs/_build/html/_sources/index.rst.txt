@@ -14,10 +14,16 @@ With C-COMPASS, users can perform comprehensive quantitative analyses of compart
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    installation.rst
+   preparation.rst
+   usage.rst
+   faq.rst
+   contributing.rst
+   license.rst
+   changelog.rst
 
 Indices and tables
 ==================
