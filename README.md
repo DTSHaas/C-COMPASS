@@ -56,6 +56,6 @@ C-COMPASS is licensed under the BSD 3-Clause License.
 For any questions, contact danniel.haas@helmholtz-munich.de
 
 ### Pre-Publication Information
-The software documenation to C-COMPASS is accessable under:
+The software documenation to C-COMPASS is accessable under
 **/docs/build/html/index.html**
-and will be released online with publication of the paper.
+and will be publically available by the official release of C-COMPASS.
