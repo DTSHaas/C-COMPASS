@@ -39,14 +39,14 @@ You can also run the software via the command line:
 > python CCMPS.py
 
 ### Cumputation time (on a standard desktop computer)
-- Prepocessing of Gradient and TotalProteome Data takes only up to a few minutes
-- Neural Network training for a dataset with three conditions and four replicates each needs around 1-2h
-- Calculation of static predictions (per condition) takes a few minutes
-- Calculation of conditional comparisons (global comparison) takes up to 30 min (for the above mentioned dataset)
-- Caluclation of class-centric statistics and comparison takes up to 10 min (for the above mentioned dataset)
+- Prepocessing of Gradient and TotalProteome Data takes only up to a few minutes.
+- Neural Network training for a dataset with three conditions and four replicates needs around 1-2h.
+- Calculation of static predictions (per condition) takes a few minutes.
+- Calculation of conditional comparisons (global comparison) takes up to 30 min. (for the above mentioned dataset)
+- Caluclation of class-centric statistics and comparison takes up to 10 min. (for the above mentioned dataset)
 
 ### Status:
-- The appearance of the GUI will be improved in the near future. Progress bars will be included, as well as some help sections
+- The appearance of the GUI will be improved in the near future. Progress bars will be included, as well as some help sections.
 - Computation time will be optimized in the near future.
 - Principal analysis steps and caluclations will be kept as they are in version 1.0 unless changes are suggested by the reviewers.
 
